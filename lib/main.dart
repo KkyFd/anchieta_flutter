@@ -25,12 +25,15 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _radio;
   String? _regiao;
   bool _checkbox = false;
+  bool _result = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text('Olá Flutter')),
         body: Center(
+          child: SingleChildScrollView( // tava crashando sem isso, não vou colocar horizontal, preguiça
+            padding: EdgeInsets.symmetric(vertical: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -202,11 +205,31 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(fontSize: 16)
                   ),
                 ],
-              )
+              ),
+              SizedBox(height: 30),
+
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    _result = true;
+                  });
+                }, 
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Color(0xff607d8b))
+                ),
+                child: Text(
+                  "Cadastrar",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+
+              
             ],
-            
           ),
-        ),
+        )),
       ),
     );
   }
