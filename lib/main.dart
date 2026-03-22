@@ -21,11 +21,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _sliderValue = 0.0;
-  String? _radio;
+  String? _nomeProduto;
+  String? _nomeProdutoFinal;
+  double _quantidade = 0.0;
+  int? _quantidadeFinal;
+  String? _entrega;
+  String? _entregaFinal;
   String? _regiao;
-  bool _checkbox = false;
+  String? _regiaoFinal;
+  bool _promocao = false;
+  String? _promocaoFinal;
   bool _result = false;
+  bool get _formularioValido => 
+    _result &&
+    _nomeProdutoFinal != null &&
+    _quantidade > 0 &&
+    _entrega != null &&
+    _regiao != null;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 TextField(
                   onChanged: (value) {
                     setState(() {
-                      // depois?
+                      _nomeProduto = value;
                     });
                   },
                   autocorrect: true, 
@@ -61,18 +73,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ),
               Text(
-                "Defina a quantidade: ${_sliderValue.round()}",
+                "Defina a quantidade: ${_quantidade.round()}",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: Slider(
-                  value: _sliderValue, 
+                  value: _quantidade, 
                   min: 0.0,
                   max: 8001.0,
                   onChanged: (value) {
                     setState(() {
-                      _sliderValue = value;
+                      _quantidade = value;
                     });
                   },
                 ),
@@ -99,10 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               ) */
               RadioGroup(
-                groupValue: _radio,
+                groupValue: _entrega,
                 onChanged: (String? novo){
                   setState(() {
-                    _radio = novo!;
+                    _entrega = novo!;
                   });
                 },
                 child: Padding(
@@ -193,10 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Checkbox(
-                    value: _checkbox, 
+                    value: _promocao, 
                     onChanged: (bool? novo) {
                       setState(() {
-                        _checkbox = novo!;
+                        _promocao = novo!;
                       });
                     }
                   ),
@@ -212,6 +224,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: (){
                   setState(() {
                     _result = true;
+                    _nomeProdutoFinal = _nomeProduto;
+                    _quantidadeFinal = _quantidade.floor();
+                    _entregaFinal = _entrega;
+                    _regiaoFinal = _regiao;
+                    _promocaoFinal = _promocao
+                      ? "O cliente aceita o envio de promoções"
+                      : "O cliente não aceita o envio de promoções";
                   });
                 }, 
                 style: ButtonStyle(
@@ -226,7 +245,24 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 30),
 
-              
+              _formularioValido
+                ? Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "O produto selecionado foi: $_nomeProdutoFinal, e a quantidade de produtos escolhida foi $_quantidadeFinal. O pedido será entregue via $_entregaFinal. Já a região de entrega será $_regiaoFinal. $_promocaoFinal",
+                    style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+                : _result
+                  ? Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      "Por favor, preencha todos os campos antes de cadastrar!",
+                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)
+                    ),
+                  )
+                  : SizedBox.shrink()
             ],
           ),
         )),

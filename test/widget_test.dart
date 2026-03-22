@@ -26,6 +26,7 @@ void main() {
 
   testWidgets('Fase 4: Checkbox de promoções', (WidgetTester tester) async {
     await tester.pumpWidget(const MainApp());
+    await tester.ensureVisible(find.byType(Checkbox)); // adicionado pra parar de crashar
     await tester.tap(find.byType(Checkbox));
     await tester.pump();
     expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, isTrue, 
@@ -37,9 +38,11 @@ void main() {
     
     // Simula preenchimento completo
     await tester.enterText(find.byType(TextField), 'Produto X');
+    await tester.ensureVisible(find.text('Cadastrar')); // adicionado pra parar de crashar
     await tester.tap(find.text('Cadastrar'));
     await tester.pump();
 
+    await tester.ensureVisible(find.textContaining('Produto X')); // adicionado pra parar de crashar
     // Valida se o resultado apareceu
     expect(find.textContaining('Produto X'), findsOneWidget, 
       reason: "O texto final não foi exibido na tela após clicar em Cadastrar!");
