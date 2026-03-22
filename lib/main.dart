@@ -22,6 +22,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double _sliderValue = 0.0;
+  String? _radio;
+  String? _regiao;
+  bool _checkbox = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,21 +58,153 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ),
               Text(
-                "Defina a quantidade:",
+                "Defina a quantidade: ${_sliderValue.round()}",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
               ),
-              Slider(
-                value: _sliderValue, 
-                min: 0.0,
-                max: 100.0,
-                label: _sliderValue.round().toString(),
-                onChanged: (value) {
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Slider(
+                  value: _sliderValue, 
+                  min: 0.0,
+                  max: 8001.0,
+                  onChanged: (value) {
+                    setState(() {
+                      _sliderValue = value;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child:
+                Text(
+                  "Escolha o tipo de entrega:",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                ),
+              ),
+/*era pra fazer radio aqui :skull:               DropdownButton(
+                items: ["Carreto", "Retirada", "Correio"].map((String entrega){ 
+                  return DropdownMenuItem (
+                    value: entrega,
+                    child: Text(entrega),
+                  );
+                }).toList(), // cacete que syntax chata
+                onChanged: (String? novo) {
                   setState(() {
-                    _sliderValue = value;
+                    //
+                  });
+                }
+              ) */
+              RadioGroup(
+                groupValue: _radio,
+                onChanged: (String? novo){
+                  setState(() {
+                    _radio = novo!;
                   });
                 },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Radio(
+                          value: "Carreto"
+                          ),
+                          Text("Carreto", style: TextStyle(fontSize: 14))
+                        ],
+                      ),
+
+                      SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          Radio(
+                          value: "Retirada"
+                          ),
+                          Text("Retirada", style: TextStyle(fontSize: 14))
+                        ],
+                      ),
+
+                      SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          Radio(
+                          value: "Correio"
+                          ),
+                          Text("Correio", style: TextStyle(fontSize: 14))
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ),
+              SizedBox(height: 10),
+/*               Column(
+                children: [
+                  Radio(
+                    value: "Carreto",
+                    groupValue: _radio,
+                  ),
+                  Radio(
+                    value: "Retirada",
+                    groupValue: _radio
+                  ),
+                  RadioGroup(
+                    value: "Correio",
+                    groupValue: _radio
+                  )
+                ],
+              ) */
+              Text(
+                "Escolha a região:",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+              ),
+
+              SizedBox(height: 30),
+            //agora sim é o dropdown :D
+              DropdownButton(
+                value: _regiao,
+                items: ["Norte", "Leste", "Sul", "Oeste"].map((String regiaoMap){ 
+                  return DropdownMenuItem (
+                    value: regiaoMap,
+                    child: Text(regiaoMap),
+                  );
+                }).toList(), // cacete que syntax chata
+                onChanged: (String? novo) {
+                  setState(() {
+                    _regiao = novo;
+                  });
+                }
+              ),
+
+              SizedBox(height: 30),
+
+              Text(
+                "Deseja receber promoções via e-mail?",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                    value: _checkbox, 
+                    onChanged: (bool? novo) {
+                      setState(() {
+                        _checkbox = novo!;
+                      });
+                    }
+                  ),
+                  Text(
+                    "Sim, eu desejo receber promoções via e-mail",
+                    style: TextStyle(fontSize: 16)
+                  ),
+                ],
               )
             ],
+            
           ),
         ),
       ),
