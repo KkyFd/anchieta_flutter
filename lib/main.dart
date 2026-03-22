@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: [Padding(padding: EdgeInsets.all(20), child: TextField(autocorrect: true, decoration: InputDecoration(labelText: "Produto", border: OutlineInputBorder())),)
  
             ],
           ),
